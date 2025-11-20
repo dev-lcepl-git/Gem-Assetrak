@@ -1,0 +1,5 @@
+{
+  "name": "Industrial AssetTrack AI",
+  "description": "A comprehensive asset management solution designed for industrial plants. Features inventory tracking, maintenance scheduling, warranty monitoring, and an AI-powered maintenance assistant based on equipment manuals.",
+  "requestFramePermissions": []
+}
