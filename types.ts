@@ -1,7 +1,7 @@
 export enum AssetStatus {
   WORKING = 'Working',
   MAINTENANCE = 'Under Maintenance',
-  ATTENTION_NEEDED = 'Attention Needed', // Based on "leakage" notes in PDF
+  ATTENTION_NEEDED = 'Attention Needed',
   RETIRED = 'Retired'
 }
 
@@ -11,10 +11,18 @@ export interface SparePart {
   quantity?: number;
 }
 
+export interface ServiceRecord {
+  id: string;
+  date: string;
+  type: 'Preventive' | 'Corrective' | 'Repair' | 'Inspection';
+  performer: string;
+  notes: string;
+}
+
 export interface Asset {
   id: string;
   name: string;
-  category: string; // Pump, Motor, Meter, Mixer, etc.
+  category: string; // Pump, Motor, Meter, Mixer, Actuator, Sensor
   model: string;
   make: string;
   quantity: number;
@@ -23,10 +31,12 @@ export interface Asset {
   location: string; // e.g., "Raw Water Pump House", "Chemical House"
   notes: string;
   spareParts: SparePart[];
-  installationDate: string; // Mocked
-  warrantyExpDate: string; // Mocked
-  lastServiceDate: string; // Mocked
-  nextServiceDueDate: string; // Mocked
+  installationDate: string; // YYYY-MM-DD
+  warrantyExpDate: string; // YYYY-MM-DD
+  lastServiceDate: string; // YYYY-MM-DD
+  nextServiceDueDate: string; // YYYY-MM-DD
+  imageUrl?: string; // Base64 string of the uploaded image
+  serviceHistory?: ServiceRecord[];
 }
 
 export interface ChatMessage {

@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
-import { ChatMessage } from '../types';
+import { ChatMessage, Asset } from '../types';
 
-const MaintenanceChat: React.FC = () => {
+interface MaintenanceChatProps {
+    assets: Asset[];
+}
+
+const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -43,7 +47,8 @@ const MaintenanceChat: React.FC = () => {
             parts: [{ text: m.text }]
         }));
 
-        const responseText = await sendMessageToGemini(userMessage.text, history);
+        // Pass the current assets to the service so it knows about new items
+        const responseText = await sendMessageToGemini(userMessage.text, history, assets);
 
         const botMessage: ChatMessage = {
             role: 'model',

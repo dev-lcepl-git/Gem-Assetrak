@@ -1,17 +1,19 @@
 import { GoogleGenAI } from "@google/genai";
 import { SYSTEM_INSTRUCTION, INITIAL_ASSETS } from "../constants";
+import { Asset } from "../types";
 
-// Create a context string from the asset data
-const ASSET_CONTEXT = JSON.stringify(INITIAL_ASSETS.map(a => ({
-    id: a.id,
-    name: a.name,
-    model: a.model,
-    status: a.status,
-    notes: a.notes,
-    spares: a.spareParts
-})));
-
-const fullSystemInstruction = `${SYSTEM_INSTRUCTION}\n\nCURRENT ASSET DATA:\n${ASSET_CONTEXT}`;
+// Helper to generate context string from current assets
+const generateAssetContext = (assets: Asset[]) => {
+    return JSON.stringify(assets.map(a => ({
+        id: a.id,
+        name: a.name,
+        model: a.model,
+        status: a.status,
+        notes: a.notes,
+        spares: a.spareParts,
+        specifications: a.specifications
+    })));
+};
 
 let aiClient: GoogleGenAI | null = null;
 
@@ -26,11 +28,19 @@ export const initializeGenAI = () => {
     return aiClient;
 };
 
-export const sendMessageToGemini = async (message: string, history: {role: string, parts: {text: string}[]}[] = []) => {
+export const sendMessageToGemini = async (
+    message: string, 
+    history: {role: string, parts: {text: string}[]}[] = [],
+    currentAssets: Asset[] = INITIAL_ASSETS // Allow passing current dynamic assets
+) => {
     const ai = initializeGenAI();
     if (!ai) {
         return "API_KEY is missing. Please configure the environment.";
     }
+
+    // Generate dynamic instruction based on the LATEST assets provided
+    const assetContext = generateAssetContext(currentAssets);
+    const fullSystemInstruction = `${SYSTEM_INSTRUCTION}\n\nCURRENT ASSET DATA:\n${assetContext}`;
 
     try {
         const chat = ai.chats.create({

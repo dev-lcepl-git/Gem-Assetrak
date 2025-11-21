@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import AssetList from './components/AssetList';
 import MaintenanceChat from './components/MaintenanceChat';
 import { INITIAL_ASSETS } from './constants';
+import { Asset } from './types';
 
 enum View {
   DASHBOARD = 'Dashboard',
@@ -15,15 +16,24 @@ enum View {
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.DASHBOARD);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [assets, setAssets] = useState<Asset[]>(INITIAL_ASSETS);
+
+  const handleAddAsset = (newAsset: Asset) => {
+      setAssets(prev => [...prev, newAsset]);
+  };
+
+  const handleUpdateAsset = (updatedAsset: Asset) => {
+      setAssets(prev => prev.map(a => a.id === updatedAsset.id ? updatedAsset : a));
+  };
 
   const renderContent = () => {
     switch (currentView) {
       case View.DASHBOARD:
-        return <Dashboard assets={INITIAL_ASSETS} />;
+        return <Dashboard assets={assets} />;
       case View.INVENTORY:
-        return <AssetList assets={INITIAL_ASSETS} />;
+        return <AssetList assets={assets} onAddAsset={handleAddAsset} onUpdateAsset={handleUpdateAsset} />;
       case View.CHAT:
-        return <div className="h-[calc(100vh-8rem)]"><MaintenanceChat /></div>;
+        return <div className="h-[calc(100vh-8rem)]"><MaintenanceChat assets={assets} /></div>;
       case View.SETTINGS:
         return (
             <div className="p-8 text-center text-slate-500">
@@ -33,7 +43,7 @@ const App: React.FC = () => {
             </div>
         );
       default:
-        return <Dashboard assets={INITIAL_ASSETS} />;
+        return <Dashboard assets={assets} />;
     }
   };
 
