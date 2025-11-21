@@ -1,4 +1,39 @@
-import { Asset, AssetStatus } from './types';
+
+import { Asset, AssetStatus, Module } from './types';
+
+export const DEFAULT_CATEGORIES = [
+  'Pump', 'Motor', 'Sensor', 'Actuator', 'Mixer', 'Blower', 'Mechanism', 'Dosing', 'Valve', 'Tank', 'Electrical', 'Instrument'
+];
+
+export const INITIAL_MODULES: Module[] = [
+  {
+    id: 'mod-raw-water',
+    name: 'Raw Water Section',
+    subModules: [
+      { id: 'sub-pump-house', name: 'Pump House' },
+      { id: 'sub-sump', name: 'Sump Tank' },
+      { id: 'sub-inlet', name: 'Inlet' }
+    ]
+  },
+  {
+    id: 'mod-treatment',
+    name: 'Treatment Area',
+    subModules: [
+      { id: 'sub-clari', name: 'Clarifloculator' },
+      { id: 'sub-filter', name: 'Filter Bed' },
+      { id: 'sub-chem', name: 'Chemical House' },
+      { id: 'sub-flash', name: 'Flash Mixer' }
+    ]
+  },
+  {
+    id: 'mod-sludge',
+    name: 'Sludge & Waste',
+    subModules: [
+      { id: 'sub-sledge', name: 'Sledge Pit' },
+      { id: 'sub-mbr', name: 'MBR' }
+    ]
+  }
+];
 
 export const INITIAL_ASSETS: Asset[] = [
   // --- Page 1: Raw Water Pumps ---
@@ -17,7 +52,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'HSC'
     },
     status: AssetStatus.ATTENTION_NEEDED,
-    location: 'Raw Water Pump House',
+    location: 'Raw Water Section - Pump House',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-pump-house',
     notes: '3 pumps working. 1 pump has water leakage from sleeve both sides. Requires immediate spare replacement.',
     spareParts: [
       { name: 'Bearing DE', materialOrMake: 'SKF' },
@@ -67,7 +104,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.WORKING,
-    location: 'Raw Water Pump House',
+    location: 'Raw Water Section - Pump House',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-pump-house',
     notes: 'All are working.',
     spareParts: [],
     installationDate: '2022-06-20',
@@ -90,7 +129,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.MAINTENANCE,
-    location: 'Clear Water Pump House',
+    location: 'Raw Water Section - Pump House',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-pump-house',
     notes: '3 working, 1 under maintenance. Motors are working.',
     spareParts: [
       { name: 'Shaft', materialOrMake: 'SS-410' },
@@ -131,7 +172,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Protection: 'IP66/67'
     },
     status: AssetStatus.WORKING,
-    location: 'Sump Tank',
+    location: 'Raw Water Section - Sump Tank',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-sump',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2023-01-01',
@@ -151,7 +194,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'Pressure Transmitter'
     },
     status: AssetStatus.WORKING,
-    location: 'Raw Water Pump House',
+    location: 'Raw Water Section - Pump House',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-pump-house',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2022-03-01',
@@ -170,7 +215,9 @@ export const INITIAL_ASSETS: Asset[] = [
        Type: 'Electromagnetic'
     },
     status: AssetStatus.WORKING,
-    location: 'Inlet',
+    location: 'Raw Water Section - Inlet',
+    moduleId: 'mod-raw-water',
+    subModuleId: 'sub-inlet',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2021-08-15',
@@ -192,7 +239,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Remi Elektrotechnik LTD. (VSC)'
     },
     status: AssetStatus.WORKING,
-    location: 'Flash Mixer',
+    location: 'Treatment Area - Flash Mixer',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-flash',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2020-02-20',
@@ -215,7 +264,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.ATTENTION_NEEDED,
-    location: 'Clarifloculator',
+    location: 'Treatment Area - Clarifloculator',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-clari',
     notes: '1 working, 1 under maintenance, 2 need to be pulled up (stuck). Name plates not visible.',
     spareParts: [],
     installationDate: '2018-01-01',
@@ -236,7 +287,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.ATTENTION_NEEDED,
-    location: 'Clarifloculator',
+    location: 'Treatment Area - Clarifloculator',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-clari',
     notes: '1 Nos Roller Bearing need to be Replaced.',
     spareParts: [
         { name: 'Roller Bearing', materialOrMake: 'Generic' }
@@ -262,7 +315,9 @@ export const INITIAL_ASSETS: Asset[] = [
       HP: '0.5'
     },
     status: AssetStatus.WORKING,
-    location: 'Chemical House',
+    location: 'Treatment Area - Chemical House',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-chem',
     notes: '2 used for PAC, 2 used for Lime. All working.',
     spareParts: [],
     installationDate: '2022-05-10',
@@ -284,7 +339,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Remi Elektrotechnik LTD'
     },
     status: AssetStatus.WORKING,
-    location: 'Chemical House',
+    location: 'Treatment Area - Chemical House',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-chem',
     notes: 'All 5 are working.',
     spareParts: [],
     installationDate: '2021-09-01',
@@ -309,7 +366,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.WORKING,
-    location: 'Filter House',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'All 2 nos pump and Motor are working.',
     spareParts: [],
     installationDate: '2020-11-15',
@@ -330,7 +389,9 @@ export const INITIAL_ASSETS: Asset[] = [
       MotorMake: 'Crompton Greaves LTD'
     },
     status: AssetStatus.WORKING,
-    location: 'Blower Room',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Both Blowers are working.',
     spareParts: [],
     installationDate: '2021-01-20',
@@ -350,7 +411,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'Electric Actuator'
     },
     status: AssetStatus.WORKING,
-    location: 'Pipe Gallary (filter bed)',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Working manually. Needs SCADA connection.',
     spareParts: [],
     installationDate: '2023-05-01',
@@ -369,7 +432,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'Electric Actuator'
     },
     status: AssetStatus.WORKING,
-    location: 'Pipe Gallary',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Working manually. Needs SCADA connection. Nameplates invisible.',
     spareParts: [],
     installationDate: '2023-05-01',
@@ -388,7 +453,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'Electric Actuator'
     },
     status: AssetStatus.WORKING,
-    location: 'Pipe Gallary',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Working manually. Needs SCADA connection.',
     spareParts: [],
     installationDate: '2023-05-01',
@@ -409,7 +476,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Size: '300 DN'
     },
     status: AssetStatus.ATTENTION_NEEDED,
-    location: 'Filter Bed',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Not working due to no SCADA connection. 2 ABB, 1 Endress+Hauser.',
     spareParts: [],
     installationDate: '2023-02-15',
@@ -429,7 +498,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Notes: 'Submerged in water'
     },
     status: AssetStatus.WORKING,
-    location: 'Recirculation pump house',
+    location: 'Sludge & Waste - Sledge Pit',
+    moduleId: 'mod-sludge',
+    subModuleId: 'sub-sledge',
     notes: 'Both working. Submerged.',
     spareParts: [],
     installationDate: '2021-06-01',
@@ -448,7 +519,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: '7.5 HP'
     },
     status: AssetStatus.WORKING,
-    location: 'Sledge Pit',
+    location: 'Sludge & Waste - Sledge Pit',
+    moduleId: 'mod-sludge',
+    subModuleId: 'sub-sledge',
     notes: 'Working. Number plate invisible.',
     spareParts: [],
     installationDate: '2020-01-01',
@@ -468,7 +541,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: '300 & 400 DN'
     },
     status: AssetStatus.WORKING,
-    location: 'Outlet',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2022-04-01',
@@ -487,7 +562,9 @@ export const INITIAL_ASSETS: Asset[] = [
       Type: 'Analysis Sensor'
     },
     status: AssetStatus.ATTENTION_NEEDED,
-    location: 'Filter Bed',
+    location: 'Treatment Area - Filter Bed',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-filter',
     notes: 'Not working due to no SCADA connection.',
     spareParts: [],
     installationDate: '2023-03-10',
@@ -505,7 +582,9 @@ export const INITIAL_ASSETS: Asset[] = [
     quantity: 2,
     specifications: {},
     status: AssetStatus.WORKING,
-    location: 'Chlorine Area',
+    location: 'Treatment Area - Chemical House',
+    moduleId: 'mod-treatment',
+    subModuleId: 'sub-chem',
     notes: 'Working properly. Tags missing.',
     spareParts: [],
     installationDate: '2021-11-01',
@@ -524,7 +603,9 @@ export const INITIAL_ASSETS: Asset[] = [
        Type: 'Ultrasonic'
     },
     status: AssetStatus.WORKING,
-    location: 'MBR Tanks',
+    location: 'Sludge & Waste - MBR',
+    moduleId: 'mod-sludge',
+    subModuleId: 'sub-mbr',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2022-08-01',
@@ -541,7 +622,9 @@ export const INITIAL_ASSETS: Asset[] = [
     quantity: 2,
     specifications: {},
     status: AssetStatus.WORKING,
-    location: 'MBR',
+    location: 'Sludge & Waste - MBR',
+    moduleId: 'mod-sludge',
+    subModuleId: 'sub-mbr',
     notes: 'Working.',
     spareParts: [],
     installationDate: '2022-01-01',
@@ -561,7 +644,9 @@ export const INITIAL_ASSETS: Asset[] = [
        Torque: '40-120 Nm'
     },
     status: AssetStatus.WORKING,
-    location: 'MBR',
+    location: 'Sludge & Waste - MBR',
+    moduleId: 'mod-sludge',
+    subModuleId: 'sub-mbr',
     notes: 'All working.',
     spareParts: [],
     installationDate: '2022-06-15',

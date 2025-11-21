@@ -1,19 +1,21 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
-import { ChatMessage, Asset } from '../types';
+import { ChatMessage, Asset, UserRole } from '../types';
 
 interface MaintenanceChatProps {
     assets: Asset[];
+    userRole: UserRole;
 }
 
-const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets }) => {
+const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: 'model',
-      text: "Hello! I'm your Maintenance Assistant. I have access to the plant's asset inventory and specifications. How can I help you today?",
+      text: `Hello ${userRole}! I'm your Maintenance Assistant. I have access to the plant's asset inventory and specifications. How can I help you today?`,
       timestamp: new Date()
     }
   ]);
