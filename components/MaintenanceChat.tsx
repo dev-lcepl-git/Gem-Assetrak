@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
@@ -78,16 +77,16 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
   };
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center gap-2">
-        <Sparkles className="w-5 h-5 text-purple-600" />
+    <div className="h-full flex flex-col bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center gap-2 transition-colors">
+        <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
         <div>
-            <h3 className="font-semibold text-slate-800">AI Maintenance Assistant</h3>
-            <p className="text-xs text-slate-500">Powered by Gemini 2.5 Flash</p>
+            <h3 className="font-semibold text-slate-800 dark:text-white">AI Maintenance Assistant</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Powered by Gemini 2.5 Flash</p>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -95,15 +94,15 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
           >
             <div className={`flex max-w-[80%] gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                msg.role === 'user' ? 'bg-blue-100' : 'bg-purple-100'
+                msg.role === 'user' ? 'bg-blue-100 dark:bg-blue-900' : 'bg-purple-100 dark:bg-purple-900'
               }`}>
-                {msg.role === 'user' ? <User className="w-5 h-5 text-blue-600" /> : <Bot className="w-5 h-5 text-purple-600" />}
+                {msg.role === 'user' ? <User className="w-5 h-5 text-blue-600 dark:text-blue-300" /> : <Bot className="w-5 h-5 text-purple-600 dark:text-purple-300" />}
               </div>
               <div
                 className={`p-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === 'user'
                     ? 'bg-blue-600 text-white rounded-tr-none'
-                    : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none shadow-sm'
+                    : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-tl-none shadow-sm'
                 }`}
               >
                 {msg.text}
@@ -114,10 +113,10 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
         {isLoading && (
           <div className="flex w-full justify-start">
              <div className="flex gap-2">
-                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                   <Loader2 className="w-5 h-5 text-purple-600 animate-spin" />
+                <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                   <Loader2 className="w-5 h-5 text-purple-600 dark:text-purple-300 animate-spin" />
                 </div>
-                <div className="bg-white border border-slate-200 p-3 rounded-lg rounded-tl-none text-sm text-slate-500 italic shadow-sm">
+                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg rounded-tl-none text-sm text-slate-500 dark:text-slate-400 italic shadow-sm">
                     Analyzing technical documentation...
                 </div>
              </div>
@@ -126,7 +125,7 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 bg-white border-t border-slate-200">
+      <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 transition-colors">
         <div className="flex gap-2 relative">
           <input
             type="text"
@@ -135,7 +134,7 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
             onKeyDown={handleKeyDown}
             placeholder="Ask about maintenance, specs, or spare parts..."
             disabled={isLoading}
-            className="flex-1 border border-slate-300 rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-sm"
+            className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg pl-4 pr-12 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-sm transition-colors"
           />
           <button
             onClick={handleSend}
@@ -145,7 +144,7 @@ const MaintenanceChat: React.FC<MaintenanceChatProps> = ({ assets, userRole }) =
             <Send className="w-4 h-4" />
           </button>
         </div>
-        <p className="text-xs text-slate-400 mt-2 text-center">
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">
             AI can make mistakes. Please verify critical specs with the printed nameplates.
         </p>
       </div>

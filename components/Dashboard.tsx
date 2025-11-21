@@ -28,7 +28,7 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
     }, {} as Record<string, number>);
 
     const totalAssets = assets.length;
-    const workingPercentage = Math.round(((statusCounts[AssetStatus.WORKING] || 0) / totalAssets) * 100);
+    const workingPercentage = Math.round(((statusCounts[AssetStatus.WORKING] || 0) / totalAssets) * 100) || 0;
     
     // Service Logic
     const today = new Date();
@@ -80,72 +80,72 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-slate-800">Plant Overview</h2>
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Plant Overview</h2>
       
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Operational Health */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Operational Health</p>
-              <p className="text-3xl font-bold text-emerald-600 mt-1">{stats.workingPercentage}%</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Operational Health</p>
+              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{stats.workingPercentage}%</p>
             </div>
-            <div className="p-3 bg-emerald-50 rounded-lg">
-              <Activity className="w-6 h-6 text-emerald-600" />
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+              <Activity className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
-          <p className="text-xs text-slate-400 mt-2">Assets in working condition</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">Assets in working condition</p>
         </div>
 
         {/* Maintenance Needs */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Service Overdue</p>
-              <p className="text-3xl font-bold text-red-600 mt-1">{stats.overdueCount}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Service Overdue</p>
+              <p className="text-3xl font-bold text-red-600 dark:text-red-400 mt-1">{stats.overdueCount}</p>
             </div>
-            <div className="p-3 bg-red-50 rounded-lg">
-              <AlertTriangle className="w-6 h-6 text-red-600" />
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
           </div>
-           <p className="text-xs text-slate-400 mt-2">{stats.upcomingCount} due within 30 days</p>
+           <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">{stats.upcomingCount} due within 30 days</p>
         </div>
 
         {/* Active Warranty */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Active Warranty</p>
-              <p className="text-3xl font-bold text-blue-600 mt-1">{stats.warrantyActiveCount}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Active Warranty</p>
+              <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-1">{stats.warrantyActiveCount}</p>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <ShieldCheck className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <ShieldCheck className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
-          <p className="text-xs text-slate-400 mt-2">{(stats.totalAssets - stats.warrantyActiveCount)} assets expired</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">{(stats.totalAssets - stats.warrantyActiveCount)} assets expired</p>
         </div>
 
         {/* Total Assets */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Assets</p>
-              <p className="text-3xl font-bold text-slate-800 mt-1">{stats.totalAssets}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Total Assets</p>
+              <p className="text-3xl font-bold text-slate-800 dark:text-white mt-1">{stats.totalAssets}</p>
             </div>
-            <div className="p-3 bg-slate-100 rounded-lg">
-              <Wrench className="w-6 h-6 text-slate-600" />
+            <div className="p-3 bg-slate-100 dark:bg-slate-700 rounded-lg">
+              <Wrench className="w-6 h-6 text-slate-600 dark:text-slate-300" />
             </div>
           </div>
-          <p className="text-xs text-slate-400 mt-2">Across {categoryData.length} categories</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">Across {categoryData.length} categories</p>
         </div>
       </div>
 
       {/* Charts Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Status Distribution */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Asset Condition</h3>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">Asset Condition</h3>
             <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -157,12 +157,13 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
+                            stroke="none" // Remove white stroke for dark mode look
                         >
                             {chartData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[entry.name as AssetStatus] || '#cbd5e1'} />
                             ))}
                         </Pie>
-                        <Tooltip />
+                        <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#f8fafc' }} itemStyle={{ color: '#f8fafc' }} />
                         <Legend verticalAlign="bottom" height={36}/>
                     </PieChart>
                 </ResponsiveContainer>
@@ -170,8 +171,8 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
         </div>
 
          {/* Warranty Status */}
-         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Warranty Coverage</h3>
+         <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">Warranty Coverage</h3>
             <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -183,11 +184,12 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
                             outerRadius={80}
                             paddingAngle={5}
                             dataKey="value"
+                            stroke="none"
                         >
                              <Cell fill={WARRANTY_COLORS.Active} />
                              <Cell fill={WARRANTY_COLORS.Expired} />
                         </Pie>
-                        <Tooltip />
+                        <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#f8fafc' }} itemStyle={{ color: '#f8fafc' }} />
                         <Legend verticalAlign="bottom" height={36}/>
                     </PieChart>
                 </ResponsiveContainer>
@@ -198,15 +200,15 @@ const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
       {/* Charts Row 2 */}
       <div className="grid grid-cols-1">
          {/* Category Distribution */}
-         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Inventory by Category</h3>
+         <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">Inventory by Category</h3>
              <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={categoryData}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="name" tick={{fontSize: 12}} />
-                        <YAxis allowDecimals={false} />
-                        <Tooltip cursor={{fill: 'transparent'}} />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.3} />
+                        <XAxis dataKey="name" tick={{fontSize: 12, fill: '#94a3b8'}} axisLine={false} tickLine={false} />
+                        <YAxis allowDecimals={false} tick={{fontSize: 12, fill: '#94a3b8'}} axisLine={false} tickLine={false}/>
+                        <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#f8fafc' }} />
                         <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
                     </BarChart>
                 </ResponsiveContainer>

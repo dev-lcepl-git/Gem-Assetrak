@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Asset, AssetStatus, SparePart, Module, UserRole } from '../types';
 import { Search, Filter, AlertCircle, Calendar, Box, ChevronRight, X, ShieldCheck, ShieldAlert, Clock, Plus, Upload, Image as ImageIcon, History, PenTool, Check, ChevronLeft, Trash2, Save, Edit, Link as LinkIcon, Lock } from 'lucide-react';
@@ -85,10 +84,10 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
   const getStatusColor = (status: AssetStatus) => {
     switch (status) {
-      case AssetStatus.WORKING: return 'bg-emerald-100 text-emerald-800';
-      case AssetStatus.MAINTENANCE: return 'bg-amber-100 text-amber-800';
-      case AssetStatus.ATTENTION_NEEDED: return 'bg-red-100 text-red-800';
-      default: return 'bg-slate-100 text-slate-800';
+      case AssetStatus.WORKING: return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300';
+      case AssetStatus.MAINTENANCE: return 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300';
+      case AssetStatus.ATTENTION_NEEDED: return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
+      default: return 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300';
     }
   };
 
@@ -326,16 +325,16 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
           <input
             type="text"
             placeholder="Search assets by name, model, or ID..."
-            className="pl-10 pr-4 py-2 w-full border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+            className="pl-10 pr-4 py-2 w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm transition-colors"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <div className="flex items-center gap-2">
-             <Filter className="h-4 w-4 text-slate-500" />
+             <Filter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
              <select
-                className="border border-slate-300 rounded-lg py-2 px-3 text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg py-2 px-3 text-sm text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
              >
@@ -358,49 +357,49 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
       </div>
 
       {/* Table Container */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex-1 min-h-0 flex flex-col overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex-1 min-h-0 flex flex-col overflow-hidden transition-colors">
         <div className="overflow-auto flex-1">
-          <table className="min-w-full divide-y divide-slate-200 relative">
-            <thead className="bg-slate-50 sticky top-0 z-10 shadow-sm">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700 relative">
+            <thead className="bg-slate-50 dark:bg-slate-900 sticky top-0 z-10 shadow-sm transition-colors">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Asset Details</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Location</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Operational Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Warranty & Service</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Asset Details</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Location</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Operational Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Warranty & Service</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
+            <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700 transition-colors">
               {filteredAssets.length > 0 ? filteredAssets.map((asset) => {
                  const warrantyActive = isWarrantyActive(asset.warrantyExpDate);
                  const serviceOverdue = isServiceOverdue(asset.nextServiceDueDate);
                  
                  return (
-                <tr key={asset.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => {
+                <tr key={asset.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer group" onClick={() => {
                     setSelectedAsset(asset);
                     setDetailViewMode('info');
                 }}>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       {asset.imageUrl ? (
-                        <img src={asset.imageUrl} alt={asset.name} className="h-10 w-10 rounded-full object-cover border border-slate-200" />
+                        <img src={asset.imageUrl} alt={asset.name} className="h-10 w-10 rounded-full object-cover border border-slate-200 dark:border-slate-600" />
                       ) : (
                         <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs ${
-                            asset.category === 'Pump' ? 'bg-blue-100 text-blue-600' :
-                            asset.category === 'Sensor' ? 'bg-purple-100 text-purple-600' :
-                            asset.category === 'Mixer' ? 'bg-orange-100 text-orange-600' :
-                            'bg-slate-200 text-slate-600'
+                            asset.category === 'Pump' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
+                            asset.category === 'Sensor' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' :
+                            asset.category === 'Mixer' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' :
+                            'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300'
                         }`}>
                           {asset.category.substring(0,2).toUpperCase()}
                         </div>
                       )}
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-slate-900">{asset.name}</div>
-                        <div className="text-xs text-slate-500">{asset.make} - {asset.model}</div>
+                        <div className="text-sm font-medium text-slate-900 dark:text-white">{asset.name}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">{asset.make} - {asset.model}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
                     {asset.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -410,11 +409,11 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                   </td>
                    <td className="px-6 py-4 whitespace-nowrap">
                      <div className="flex flex-col gap-1">
-                        <div className={`flex items-center gap-1 text-xs font-medium ${warrantyActive ? 'text-emerald-600' : 'text-slate-400'}`}>
+                        <div className={`flex items-center gap-1 text-xs font-medium ${warrantyActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}`}>
                             {warrantyActive ? <ShieldCheck className="w-3 h-3" /> : <ShieldAlert className="w-3 h-3" />}
                             {warrantyActive ? 'Warranty Active' : 'Warranty Expired'}
                         </div>
-                        <div className={`flex items-center gap-1 text-xs font-medium ${serviceOverdue ? 'text-red-600' : 'text-blue-600'}`}>
+                        <div className={`flex items-center gap-1 text-xs font-medium ${serviceOverdue ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}`}>
                             <Clock className="w-3 h-3" />
                             {serviceOverdue ? 'Service Overdue' : `Due: ${asset.nextServiceDueDate}`}
                         </div>
@@ -428,7 +427,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                     e.stopPropagation();
                                     handleOpenEditModal(asset);
                                 }}
-                                className="text-blue-600 hover:bg-blue-50 p-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 p-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100"
                                 title="Edit Asset"
                             >
                                 <Edit className="w-4 h-4" />
@@ -440,20 +439,20 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                     e.stopPropagation();
                                     handleDeleteClick(asset.id);
                                 }}
-                                className="text-red-500 hover:bg-red-50 p-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                className="text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 p-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100"
                                 title="Delete Asset"
                             >
                                 <Trash2 className="w-4 h-4" />
                             </button>
                         )}
-                        <ChevronRight className="w-4 h-4 text-slate-300 mt-2" />
+                        <ChevronRight className="w-4 h-4 text-slate-300 dark:text-slate-600 mt-2" />
                     </div>
                   </td>
                 </tr>
               )}) : (
                   <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
-                          <Box className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                      <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                          <Box className="w-12 h-12 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
                           <p className="font-medium">No assets found</p>
                           <p className="text-sm mt-1">Try adjusting your search or filters</p>
                       </td>
@@ -466,11 +465,11 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
       {/* Add/Edit Asset Modal */}
       {isFormModalOpen && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
-                    <h2 className="text-xl font-bold text-slate-800">{isEditing ? 'Edit Asset' : 'Add New Asset'}</h2>
-                    <button onClick={() => setIsFormModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200 transition-colors">
+                <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-800 z-10 transition-colors">
+                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">{isEditing ? 'Edit Asset' : 'Add New Asset'}</h2>
+                    <button onClick={() => setIsFormModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -480,15 +479,15 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                         {/* Image Upload */}
                         <div className="md:col-span-1">
                             <div 
-                                className="w-full aspect-square border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 hover:border-blue-400 transition-colors relative overflow-hidden bg-slate-50"
+                                className="w-full aspect-square border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-blue-400 transition-colors relative overflow-hidden bg-slate-50 dark:bg-slate-900"
                                 onClick={() => fileInputRef.current?.click()}
                             >
                                 {assetForm.imageUrl ? (
                                 <img src={assetForm.imageUrl} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
                                 <>
-                                    <Upload className="w-8 h-8 text-slate-400 mb-2" />
-                                    <p className="text-xs text-center text-slate-500 px-2">Click to upload image</p>
+                                    <Upload className="w-8 h-8 text-slate-400 dark:text-slate-500 mb-2" />
+                                    <p className="text-xs text-center text-slate-500 dark:text-slate-400 px-2">Click to upload image</p>
                                 </>
                                 )}
                                 <input 
@@ -503,7 +502,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                 <button 
                                     type="button" 
                                     onClick={() => setAssetForm(prev => ({...prev, imageUrl: ''}))}
-                                    className="text-xs text-red-500 mt-2 w-full text-center hover:underline"
+                                    className="text-xs text-red-500 dark:text-red-400 mt-2 w-full text-center hover:underline"
                                 >
                                     Remove Image
                                 </button>
@@ -513,13 +512,13 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                         {/* Core Fields */}
                         <div className="md:col-span-2 space-y-4">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Asset Name</label>
-                                <input required name="name" value={assetForm.name} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Backup Pump A" />
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Asset Name</label>
+                                <input required name="name" value={assetForm.name} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Backup Pump A" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Category</label>
-                                    <select name="category" value={assetForm.category} onChange={handleCategoryChange} className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Category</label>
+                                    <select name="category" value={assetForm.category} onChange={handleCategoryChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                                         {categories.map(cat => (
                                             <option key={cat} value={cat}>{cat}</option>
                                         ))}
@@ -531,14 +530,14 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                             value={customCategoryValue}
                                             onChange={(e) => setCustomCategoryValue(e.target.value)}
                                             placeholder="Enter Category Name"
-                                            className="mt-2 w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className="mt-2 w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                                             autoFocus
                                         />
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Status</label>
-                                    <select name="status" value={assetForm.status} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Status</label>
+                                    <select name="status" value={assetForm.status} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
                                         {Object.values(AssetStatus).map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
                                 </div>
@@ -546,14 +545,14 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                              
                              {/* Dynamic Hierarchy / Location */}
                              <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Location / Module</label>
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Location / Module</label>
                                 {modules && modules.length > 0 ? (
                                     <div className="grid grid-cols-2 gap-2">
                                         <select 
                                             name="moduleId" 
                                             value={assetForm.moduleId} 
                                             onChange={handleFormChange} 
-                                            className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                            className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                                         >
                                             <option value="">Select Module...</option>
                                             {modules.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
@@ -564,7 +563,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                             value={assetForm.subModuleId} 
                                             onChange={handleFormChange} 
                                             disabled={!assetForm.moduleId}
-                                            className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm disabled:bg-slate-100 disabled:text-slate-400"
+                                            className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-600"
                                         >
                                             <option value="">Select Sub-module...</option>
                                             {activeSubModules.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -576,7 +575,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                             name="location" 
                                             value={assetForm.location} 
                                             onChange={handleFormChange} 
-                                            className="w-full border border-slate-300 rounded-lg px-3 py-2" 
+                                            className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2" 
                                             placeholder="e.g. Pump House" 
                                         />
                                         <p className="text-xs text-amber-600 flex items-center gap-1">
@@ -590,35 +589,35 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                     </div>
 
                     {/* Technical Details */}
-                    <div className="space-y-4 border-t border-slate-100 pt-4">
-                        <h3 className="text-sm font-bold text-slate-800">Technical Details</h3>
+                    <div className="space-y-4 border-t border-slate-100 dark:border-slate-700 pt-4">
+                        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Technical Details</h3>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Make</label>
-                                <input name="make" value={assetForm.make} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2" />
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Make</label>
+                                <input name="make" value={assetForm.make} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2" />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Model</label>
-                                <input name="model" value={assetForm.model} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2" />
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Model</label>
+                                <input name="model" value={assetForm.model} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2" />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Installation Date</label>
-                                <input type="date" name="installationDate" value={assetForm.installationDate || ''} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2" />
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Installation Date</label>
+                                <input type="date" name="installationDate" value={assetForm.installationDate || ''} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2" />
                             </div>
                              <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Warranty Exp.</label>
-                                <input type="date" name="warrantyExpDate" value={assetForm.warrantyExpDate || ''} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2" />
+                                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Warranty Exp.</label>
+                                <input type="date" name="warrantyExpDate" value={assetForm.warrantyExpDate || ''} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2" />
                             </div>
                         </div>
                         
                         {/* Dynamic Specifications */}
-                        <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                            <label className="block text-xs font-semibold text-slate-500 uppercase mb-2">Additional Specifications</label>
+                        <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-2">Additional Specifications</label>
                             <div className="space-y-2">
                                 {assetForm.specifications && Object.entries(assetForm.specifications).map(([key, val]) => (
                                     <div key={key} className="flex gap-2 items-center">
-                                        <input readOnly value={key} className="flex-1 text-sm bg-white border border-slate-200 rounded px-2 py-1 text-slate-500" />
-                                        <input readOnly value={val} className="flex-1 text-sm bg-white border border-slate-200 rounded px-2 py-1 text-slate-800" />
+                                        <input readOnly value={key} className="flex-1 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 text-slate-500 dark:text-slate-400" />
+                                        <input readOnly value={val} className="flex-1 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 text-slate-800 dark:text-slate-200" />
                                         <button type="button" onClick={() => handleRemoveSpec(key)} className="text-red-400 hover:text-red-600 p-1">
                                             <X className="w-4 h-4" />
                                         </button>
@@ -629,13 +628,13 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                         placeholder="Spec Name (e.g. HP)" 
                                         value={tempSpecKey} 
                                         onChange={e => setTempSpecKey(e.target.value)}
-                                        className="flex-1 border border-slate-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                        className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
                                     <input 
                                         placeholder="Value (e.g. 10)" 
                                         value={tempSpecValue} 
                                         onChange={e => setTempSpecValue(e.target.value)}
-                                        className="flex-1 border border-slate-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                        className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
                                     <button 
                                         type="button" 
@@ -650,14 +649,14 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                     </div>
                     
                     {/* Spare Parts Section */}
-                    <div className="space-y-2 border-t border-slate-100 pt-4">
-                        <label className="block text-sm font-bold text-slate-800">Recommended Spare Parts</label>
+                    <div className="space-y-2 border-t border-slate-100 dark:border-slate-700 pt-4">
+                        <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">Recommended Spare Parts</label>
                         {assetForm.spareParts && assetForm.spareParts.length > 0 && (
-                            <div className="bg-slate-50 rounded-lg border border-slate-200 p-2 space-y-1 max-h-32 overflow-y-auto">
+                            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2 space-y-1 max-h-32 overflow-y-auto">
                                 {assetForm.spareParts.map((part, idx) => (
-                                    <div key={idx} className="flex justify-between items-center bg-white p-2 rounded shadow-sm border border-slate-100 text-sm">
-                                        <span className="text-slate-700 font-medium">
-                                            {part.name} <span className="text-slate-400 font-normal">({part.materialOrMake || 'Generic'})</span>
+                                    <div key={idx} className="flex justify-between items-center bg-white dark:bg-slate-800 p-2 rounded shadow-sm border border-slate-100 dark:border-slate-700 text-sm">
+                                        <span className="text-slate-700 dark:text-slate-300 font-medium">
+                                            {part.name} <span className="text-slate-400 dark:text-slate-500 font-normal">({part.materialOrMake || 'Generic'})</span>
                                         </span>
                                         <button 
                                             type="button" 
@@ -675,18 +674,18 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                                 placeholder="Part Name" 
                                 value={tempPartName} 
                                 onChange={e => setTempPartName(e.target.value)}
-                                className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                             />
                             <input 
                                 placeholder="Material/Make" 
                                 value={tempPartMake} 
                                 onChange={e => setTempPartMake(e.target.value)}
-                                className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                             />
                             <button 
                                 type="button" 
                                 onClick={handleAddSparePart} 
-                                className="bg-blue-50 hover:bg-blue-100 text-blue-600 p-2 rounded-lg border border-blue-200 transition-colors"
+                                className="bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 p-2 rounded-lg border border-blue-200 dark:border-blue-800 transition-colors"
                                 title="Add this part"
                             >
                                 <Plus className="w-5 h-5" />
@@ -695,12 +694,12 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Notes</label>
-                        <textarea name="notes" value={assetForm.notes} onChange={handleFormChange} className="w-full border border-slate-300 rounded-lg px-3 py-2 h-20 resize-none" placeholder="Additional details..." />
+                        <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Notes</label>
+                        <textarea name="notes" value={assetForm.notes} onChange={handleFormChange} className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 h-20 resize-none" placeholder="Additional details..." />
                     </div>
 
                     <div className="pt-4 flex gap-3">
-                         <button type="button" onClick={() => setIsFormModalOpen(false)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-lg transition-colors">
+                         <button type="button" onClick={() => setIsFormModalOpen(false)} className="flex-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold py-2 px-4 rounded-lg transition-colors">
                             Cancel
                         </button>
                         <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm transition-colors">
@@ -714,21 +713,21 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
       {/* Detail Modal */}
       {selectedAsset && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200 flex flex-col">
-            <div className="sticky top-0 bg-white p-6 border-b border-slate-100 flex justify-between items-center z-10 rounded-t-xl">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200 flex flex-col transition-colors">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center z-10 rounded-t-xl transition-colors">
                <div className="flex items-center gap-3">
                    {detailViewMode !== 'info' && (
                        <button 
                         onClick={() => setDetailViewMode('info')}
-                        className="p-1 hover:bg-slate-100 rounded-full mr-2"
+                        className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full mr-2 text-slate-500 dark:text-slate-400"
                        >
-                           <ChevronLeft className="w-5 h-5 text-slate-500" />
+                           <ChevronLeft className="w-5 h-5" />
                        </button>
                    )}
                    <div>
-                        <h2 className="text-xl font-bold text-slate-800">{selectedAsset.name}</h2>
-                        <p className="text-sm text-slate-500">ID: {selectedAsset.id} | Category: {selectedAsset.category}</p>
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">{selectedAsset.name}</h2>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">ID: {selectedAsset.id} | Category: {selectedAsset.category}</p>
                    </div>
                </div>
                <div className="flex items-center gap-2">
@@ -737,7 +736,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                         {canEdit && (
                             <button 
                                 onClick={() => handleOpenEditModal(selectedAsset)}
-                                className="p-2 hover:bg-blue-50 text-blue-600 rounded-full"
+                                className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full"
                                 title="Edit"
                             >
                                 <Edit className="w-5 h-5" />
@@ -746,7 +745,7 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                         {canDelete && (
                             <button 
                                 onClick={() => handleDeleteClick(selectedAsset.id)}
-                                className="p-2 hover:bg-red-50 text-red-600 rounded-full"
+                                className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full"
                                 title="Delete"
                             >
                                 <Trash2 className="w-5 h-5" />
@@ -754,8 +753,8 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                         )}
                        </>
                    )}
-                   <button onClick={() => setSelectedAsset(null)} className="p-2 hover:bg-slate-100 rounded-full">
-                    <X className="w-6 h-6 text-slate-500" />
+                   <button onClick={() => setSelectedAsset(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full">
+                    <X className="w-6 h-6 text-slate-500 dark:text-slate-400" />
                    </button>
                </div>
             </div>
@@ -766,63 +765,63 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
                     <div className="space-y-6">
                         {/* Image Display if available */}
                         {selectedAsset.imageUrl && (
-                        <div className="w-full h-64 bg-slate-100 rounded-lg overflow-hidden mb-4 border border-slate-200">
+                        <div className="w-full h-64 bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden mb-4 border border-slate-200 dark:border-slate-700">
                             <img src={selectedAsset.imageUrl} alt={selectedAsset.name} className="w-full h-full object-contain" />
                         </div>
                         )}
 
                         {/* Status and Critical Dates */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                <span className="text-xs font-bold text-slate-400 uppercase">Condition</span>
+                            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-100 dark:border-slate-700">
+                                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Condition</span>
                                 <div className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${getStatusColor(selectedAsset.status)}`}>
                                     {selectedAsset.status}
                                 </div>
                             </div>
                             
-                            <div className={`p-4 rounded-lg border ${isServiceOverdue(selectedAsset.nextServiceDueDate) ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-100'}`}>
-                                <span className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
+                            <div className={`p-4 rounded-lg border ${isServiceOverdue(selectedAsset.nextServiceDueDate) ? 'bg-red-50 border-red-100 dark:bg-red-900/10 dark:border-red-900/30' : 'bg-slate-50 border-slate-100 dark:bg-slate-900 dark:border-slate-700'}`}>
+                                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase flex items-center gap-1">
                                     <Calendar className="w-3 h-3"/> Next Service
                                 </span>
-                                <p className={`mt-1 text-sm font-semibold ${isServiceOverdue(selectedAsset.nextServiceDueDate) ? 'text-red-700' : 'text-slate-800'}`}>
+                                <p className={`mt-1 text-sm font-semibold ${isServiceOverdue(selectedAsset.nextServiceDueDate) ? 'text-red-700 dark:text-red-400' : 'text-slate-800 dark:text-slate-200'}`}>
                                     {selectedAsset.nextServiceDueDate}
                                 </p>
                                 {isServiceOverdue(selectedAsset.nextServiceDueDate) && (
-                                    <span className="text-[10px] text-red-600 font-bold uppercase">Overdue</span>
+                                    <span className="text-[10px] text-red-600 dark:text-red-400 font-bold uppercase">Overdue</span>
                                 )}
                             </div>
 
-                            <div className={`p-4 rounded-lg border ${isWarrantyActive(selectedAsset.warrantyExpDate) ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
-                                <span className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
+                            <div className={`p-4 rounded-lg border ${isWarrantyActive(selectedAsset.warrantyExpDate) ? 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-900/30' : 'bg-slate-50 border-slate-100 dark:bg-slate-900 dark:border-slate-700'}`}>
+                                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase flex items-center gap-1">
                                     {isWarrantyActive(selectedAsset.warrantyExpDate) ? <ShieldCheck className="w-3 h-3" /> : <ShieldAlert className="w-3 h-3" />} Warranty
                                 </span>
-                                <p className={`mt-1 text-sm font-semibold ${isWarrantyActive(selectedAsset.warrantyExpDate) ? 'text-emerald-700' : 'text-slate-500'}`}>
+                                <p className={`mt-1 text-sm font-semibold ${isWarrantyActive(selectedAsset.warrantyExpDate) ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>
                                     {isWarrantyActive(selectedAsset.warrantyExpDate) ? 'Active' : 'Expired'}
                                 </p>
-                                <span className="text-[10px] text-slate-400">Ends: {selectedAsset.warrantyExpDate}</span>
+                                <span className="text-[10px] text-slate-400 dark:text-slate-500">Ends: {selectedAsset.warrantyExpDate}</span>
                             </div>
                         </div>
 
                         {/* Specifications */}
                         <div>
-                            <h3 className="text-sm font-bold text-slate-800 uppercase mb-3 border-b pb-1">Technical Specifications</h3>
+                            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase mb-3 border-b border-slate-100 dark:border-slate-700 pb-1">Technical Specifications</h3>
                             <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                                 <div className="flex flex-col">
-                                    <span className="text-xs text-slate-500">Manufacturer</span>
-                                    <span className="text-sm font-medium text-slate-900">{selectedAsset.make}</span>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">Manufacturer</span>
+                                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{selectedAsset.make}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs text-slate-500">Model</span>
-                                    <span className="text-sm font-medium text-slate-900">{selectedAsset.model}</span>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">Model</span>
+                                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{selectedAsset.model}</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs text-slate-500">Installed</span>
-                                    <span className="text-sm font-medium text-slate-900">{selectedAsset.installationDate}</span>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">Installed</span>
+                                    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{selectedAsset.installationDate}</span>
                                 </div>
                                 {Object.entries(selectedAsset.specifications || {}).map(([key, value]) => (
                                     <div key={key} className="flex flex-col">
-                                        <span className="text-xs text-slate-500">{key}</span>
-                                        <span className="text-sm font-medium text-slate-900">{value}</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">{key}</span>
+                                        <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{value}</span>
                                     </div>
                                 ))}
                             </div>
@@ -830,31 +829,31 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
                         {/* Notes */}
                         {selectedAsset.notes && (
-                            <div className="bg-amber-50 border border-amber-100 p-4 rounded-lg flex gap-3">
-                                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 p-4 rounded-lg flex gap-3">
+                                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
                                 <div>
-                                    <h4 className="text-sm font-bold text-amber-800">Field Observations</h4>
-                                    <p className="text-sm text-amber-700 mt-1">{selectedAsset.notes}</p>
+                                    <h4 className="text-sm font-bold text-amber-800 dark:text-amber-300">Field Observations</h4>
+                                    <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">{selectedAsset.notes}</p>
                                 </div>
                             </div>
                         )}
 
                         {/* Spare Parts */}
                         <div>
-                            <h3 className="text-sm font-bold text-slate-800 uppercase mb-3 border-b pb-1 flex items-center gap-2"><Box className="w-4 h-4" /> Recommended Spare Parts</h3>
+                            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase mb-3 border-b border-slate-100 dark:border-slate-700 pb-1 flex items-center gap-2"><Box className="w-4 h-4" /> Recommended Spare Parts</h3>
                             {selectedAsset.spareParts && selectedAsset.spareParts.length > 0 ? (
                                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                     {selectedAsset.spareParts.map((part, idx) => (
-                                        <li key={idx} className="flex justify-between items-center bg-slate-50 px-4 py-2 rounded border border-slate-100">
-                                            <span className="text-sm text-slate-700 font-medium">{part.name}</span>
-                                            <span className="text-xs bg-white border border-slate-200 px-2 py-1 rounded text-slate-500">
+                                        <li key={idx} className="flex justify-between items-center bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded border border-slate-100 dark:border-slate-700">
+                                            <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{part.name}</span>
+                                            <span className="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-2 py-1 rounded text-slate-500 dark:text-slate-400">
                                                 {part.materialOrMake || 'Generic'}
                                             </span>
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-sm text-slate-400 italic">No specific spare parts listed in database. Refer to manufacturer manual.</p>
+                                <p className="text-sm text-slate-400 dark:text-slate-500 italic">No specific spare parts listed in database. Refer to manufacturer manual.</p>
                             )}
                         </div>
                     </div>
@@ -862,32 +861,32 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
                 {detailViewMode === 'history' && (
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white flex items-center gap-2">
                             <History className="w-5 h-5 text-blue-500" /> Service History
                         </h3>
                         {selectedAsset.serviceHistory && selectedAsset.serviceHistory.length > 0 ? (
-                            <div className="relative border-l-2 border-slate-200 ml-3 space-y-8 py-4">
+                            <div className="relative border-l-2 border-slate-200 dark:border-slate-700 ml-3 space-y-8 py-4">
                                 {selectedAsset.serviceHistory.map((record) => (
                                     <div key={record.id} className="relative pl-8">
-                                        <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white border-2 border-blue-500"></div>
+                                        <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-800 border-2 border-blue-500"></div>
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1">
-                                            <span className="text-sm font-bold text-slate-800">{record.date}</span>
-                                            <span className="text-xs font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full border border-slate-200 w-fit">
+                                            <span className="text-sm font-bold text-slate-800 dark:text-white">{record.date}</span>
+                                            <span className="text-xs font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-600 w-fit">
                                                 {record.type}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-slate-600 italic mb-1">Technician: {record.performer}</p>
-                                        <p className="text-sm text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                        <p className="text-sm text-slate-600 dark:text-slate-400 italic mb-1">Technician: {record.performer}</p>
+                                        <p className="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-700">
                                             {record.notes}
                                         </p>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                             <div className="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                                 <History className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                                 <p className="text-slate-500 font-medium">No service history recorded.</p>
-                                 <p className="text-xs text-slate-400">Maintenance records will appear here once logged.</p>
+                             <div className="text-center py-12 bg-slate-50 dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+                                 <History className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                                 <p className="text-slate-500 dark:text-slate-400 font-medium">No service history recorded.</p>
+                                 <p className="text-xs text-slate-400 dark:text-slate-500">Maintenance records will appear here once logged.</p>
                              </div>
                         )}
                     </div>
@@ -895,32 +894,32 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
 
                 {detailViewMode === 'schedule' && (
                     <div className="space-y-6">
-                        <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white flex items-center gap-2">
                             <Calendar className="w-5 h-5 text-blue-500" /> Schedule Service
                         </h3>
-                        <form onSubmit={handleScheduleSubmit} className="space-y-4 bg-slate-50 p-6 rounded-xl border border-slate-100">
+                        <form onSubmit={handleScheduleSubmit} className="space-y-4 bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-700">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Next Service Date</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Next Service Date</label>
                                 <input 
                                     type="date" 
                                     required
                                     min={new Date().toISOString().split('T')[0]}
                                     value={scheduleDate} 
                                     onChange={(e) => setScheduleDate(e.target.value)} 
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+                                    className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none" 
                                 />
-                                <p className="text-xs text-slate-500 mt-1">Current Due Date: {selectedAsset.nextServiceDueDate}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Current Due Date: {selectedAsset.nextServiceDueDate}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">Maintenance Notes (Optional)</label>
+                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Maintenance Notes (Optional)</label>
                                 <textarea 
                                     value={scheduleNotes}
                                     onChange={(e) => setScheduleNotes(e.target.value)}
-                                    className="w-full border border-slate-300 rounded-lg px-3 py-2 h-24 resize-none focus:ring-2 focus:ring-blue-500 outline-none" 
+                                    className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded-lg px-3 py-2 h-24 resize-none focus:ring-2 focus:ring-blue-500 outline-none" 
                                     placeholder="Describe planned activities or reason for scheduling..." 
                                 />
                             </div>
-                            <div className="pt-2 flex items-center gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-yellow-800 text-xs mb-4">
+                            <div className="pt-2 flex items-center gap-2 bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg border border-yellow-100 dark:border-yellow-900/30 text-yellow-800 dark:text-yellow-300 text-xs mb-4">
                                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                                 <span>Scheduling a new service date implies that the asset will be inspected or serviced on this date.</span>
                             </div>
@@ -938,10 +937,10 @@ const AssetList: React.FC<AssetListProps> = ({ assets, modules = [], categories 
             
             {/* Footer Actions (Only visible in 'info' mode) */}
             {detailViewMode === 'info' && (
-                <div className="p-6 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row justify-end gap-3 rounded-b-xl">
+                <div className="p-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-end gap-3 rounded-b-xl transition-colors">
                     <button 
                         onClick={() => setDetailViewMode('history')}
-                        className="bg-white hover:bg-slate-100 text-slate-700 font-medium py-2 px-4 rounded-lg border border-slate-300 transition-colors flex items-center justify-center gap-2"
+                        className="bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium py-2 px-4 rounded-lg border border-slate-300 dark:border-slate-600 transition-colors flex items-center justify-center gap-2"
                     >
                         <History className="w-4 h-4" /> View History
                     </button>

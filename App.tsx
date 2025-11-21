@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, List, MessageSquareText, Settings, Bell, UserCircle, Menu, X, FolderKanban, Plus, Trash2, Check, Lock, Shield, Tag } from 'lucide-react';
+import { LayoutDashboard, List, MessageSquareText, Settings, Bell, UserCircle, Menu, X, FolderKanban, Plus, Trash2, Check, Lock, Shield, Tag, Sun, Moon } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import AssetList from './components/AssetList';
 import MaintenanceChat from './components/MaintenanceChat';
@@ -20,6 +19,31 @@ const App: React.FC = () => {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   
+  // Theme State
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+      if (typeof window !== 'undefined') {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme) return savedTheme as 'light' | 'dark';
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'light';
+  });
+
+  // Apply Theme
+  useEffect(() => {
+      const root = window.document.documentElement;
+      if (theme === 'dark') {
+          root.classList.add('dark');
+      } else {
+          root.classList.remove('dark');
+      }
+      localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+      setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
   // RBAC State
   const [userRole, setUserRole] = useState<UserRole>('Admin');
 
@@ -176,9 +200,9 @@ const App: React.FC = () => {
 
       if (userRole !== 'Admin') {
           return (
-              <div className="flex flex-col items-center justify-center h-96 text-slate-500">
-                  <Lock className="w-12 h-12 mb-4 text-slate-300" />
-                  <h3 className="text-lg font-semibold text-slate-700">Access Restricted</h3>
+              <div className="flex flex-col items-center justify-center h-96 text-slate-500 dark:text-slate-400">
+                  <Lock className="w-12 h-12 mb-4 text-slate-300 dark:text-slate-600" />
+                  <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300">Access Restricted</h3>
                   <p>Only Administrators can modify system settings.</p>
               </div>
           );
@@ -186,28 +210,28 @@ const App: React.FC = () => {
 
       return (
         <div className="max-w-4xl mx-auto space-y-8 pb-12">
-            <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg flex gap-3">
-                <Shield className="w-6 h-6 text-blue-600 flex-shrink-0" />
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg flex gap-3">
+                <Shield className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                 <div>
-                    <h3 className="font-bold text-blue-800">Admin Settings</h3>
-                    <p className="text-sm text-blue-700">You are editing settings for project: <span className="font-semibold">{currentProject.name}</span></p>
+                    <h3 className="font-bold text-blue-800 dark:text-blue-300">Admin Settings</h3>
+                    <p className="text-sm text-blue-700 dark:text-blue-400">You are editing settings for project: <span className="font-semibold">{currentProject.name}</span></p>
                 </div>
             </div>
 
             {/* Category Management */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
                  <div className="flex items-center gap-3 mb-6">
-                    <Tag className="w-6 h-6 text-purple-600" />
-                    <h2 className="text-xl font-bold text-slate-800">Asset Categories</h2>
+                    <Tag className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">Asset Categories</h2>
                 </div>
-                <p className="text-slate-500 text-sm mb-6">Manage the list of asset categories available in the dropdown menu for this project.</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">Manage the list of asset categories available in the dropdown menu for this project.</p>
                 
                 <div className="flex gap-2 mb-6">
                     <input 
                         value={newCatName}
                         onChange={(e) => setNewCatName(e.target.value)}
                         placeholder="New Category (e.g. Generator)"
-                        className="flex-1 border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 outline-none"
+                        className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 outline-none"
                     />
                     <button 
                         onClick={() => { handleAddCategory(newCatName); setNewCatName(''); }}
@@ -219,7 +243,7 @@ const App: React.FC = () => {
 
                 <div className="flex flex-wrap gap-2">
                     {categories.map((cat, idx) => (
-                        <div key={idx} className="bg-slate-50 border border-slate-200 rounded-full px-3 py-1 text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <div key={idx} className="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-full px-3 py-1 text-sm font-medium text-slate-700 dark:text-slate-200 flex items-center gap-2">
                             {cat}
                             <button onClick={() => handleDeleteCategory(cat)} className="text-slate-400 hover:text-red-500">
                                 <X className="w-3 h-3" />
@@ -230,12 +254,12 @@ const App: React.FC = () => {
             </div>
 
             {/* Module Management */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
                 <div className="flex items-center gap-3 mb-6">
-                    <FolderKanban className="w-6 h-6 text-blue-600" />
-                    <h2 className="text-xl font-bold text-slate-800">Plant Structure & Hierarchy</h2>
+                    <FolderKanban className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">Plant Structure & Hierarchy</h2>
                 </div>
-                <p className="text-slate-500 text-sm mb-6">Define the physical or logical structure of your facility. Create Modules (e.g. Areas) and Sub-modules (e.g. Systems) to organize your assets.</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">Define the physical or logical structure of your facility. Create Modules (e.g. Areas) and Sub-modules (e.g. Systems) to organize your assets.</p>
                 
                 <div className="space-y-6">
                     {/* Add Module */}
@@ -244,7 +268,7 @@ const App: React.FC = () => {
                             value={newModName}
                             onChange={(e) => setNewModName(e.target.value)}
                             placeholder="New Module Name (e.g. Raw Water Section)"
-                            className="flex-1 border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                         />
                         <button 
                             onClick={() => { handleAddModule(newModName); setNewModName(''); }}
@@ -257,25 +281,25 @@ const App: React.FC = () => {
                     {/* List Modules */}
                     <div className="grid grid-cols-1 gap-4">
                         {modules.length === 0 && (
-                            <p className="text-center text-slate-400 py-8 italic bg-slate-50 rounded-lg border border-dashed border-slate-300">No modules defined yet.</p>
+                            <p className="text-center text-slate-400 dark:text-slate-500 py-8 italic bg-slate-50 dark:bg-slate-900 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">No modules defined yet.</p>
                         )}
                         {modules.map(mod => (
-                            <div key={mod.id} className="border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
-                                <div className="p-4 bg-white border-b border-slate-100 flex justify-between items-center">
-                                    <div className="font-bold text-slate-800 flex items-center gap-2">
+                            <div key={mod.id} className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-900">
+                                <div className="p-4 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                                    <div className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
                                         <FolderKanban className="w-4 h-4 text-slate-400" />
                                         {mod.name}
                                     </div>
-                                    <button onClick={() => handleDeleteModule(mod.id)} className="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 transition-colors">
+                                    <button onClick={() => handleDeleteModule(mod.id)} className="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                                 <div className="p-4 space-y-3">
                                     {/* Submodules List */}
-                                    <div className="space-y-2 pl-4 border-l-2 border-slate-200 ml-1">
+                                    <div className="space-y-2 pl-4 border-l-2 border-slate-200 dark:border-slate-700 ml-1">
                                         {mod.subModules.map(sub => (
                                             <div key={sub.id} className="flex justify-between items-center text-sm group">
-                                                <span className="text-slate-600">{sub.name}</span>
+                                                <span className="text-slate-600 dark:text-slate-400">{sub.name}</span>
                                                 <button onClick={() => handleDeleteSubModule(mod.id, sub.id)} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <X className="w-3 h-3" />
                                                 </button>
@@ -290,11 +314,11 @@ const App: React.FC = () => {
                                             placeholder="New Sub-module..."
                                             value={activeModForSub === mod.id ? newSubName : ''}
                                             onChange={(e) => { setActiveModForSub(mod.id); setNewSubName(e.target.value); }}
-                                            className="flex-1 border border-slate-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className="flex-1 border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                                         />
                                         <button 
                                             onClick={() => { if(activeModForSub === mod.id) { handleAddSubModule(mod.id, newSubName); setNewSubName(''); } }}
-                                            className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-600 px-3 py-1 rounded text-xs font-medium"
+                                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 px-3 py-1 rounded text-xs font-medium"
                                         >
                                             Add Sub
                                         </button>
@@ -355,7 +379,7 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen flex bg-slate-50 font-sans text-slate-900">
+    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -440,33 +464,43 @@ const App: React.FC = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 shadow-sm z-10 transition-colors">
           <div className="flex items-center gap-4">
             <button 
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg md:hidden"
+                className="p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg md:hidden"
             >
                 {isSidebarOpen ? <X /> : <Menu />}
             </button>
             <div>
-                <h2 className="text-xl font-semibold text-slate-800 hidden sm:block">{currentView}</h2>
-                <p className="text-xs text-slate-500 sm:hidden">{currentProject.name}</p>
+                <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 hidden sm:block">{currentView}</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 sm:hidden">{currentProject.name}</p>
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-             <div className="hidden sm:block text-sm text-slate-600 font-medium bg-slate-100 px-3 py-1 rounded-full">
+             <div className="hidden sm:block text-sm text-slate-600 dark:text-slate-300 font-medium bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
                  {currentProject.name}
              </div>
-             <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full relative transition-colors">
+
+             {/* Theme Toggle */}
+             <button 
+                onClick={toggleTheme} 
+                className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-blue-400 rounded-full transition-colors"
+                title={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}
+             >
+                 {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+             </button>
+
+             <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 dark:hover:text-blue-400 rounded-full relative transition-colors">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
              </button>
           </div>
         </header>
 
         {/* Scrollable View Area */}
-        <div className="flex-1 overflow-y-auto p-6 bg-slate-50">
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-950 transition-colors">
           <div className="max-w-7xl mx-auto h-full">
              {renderContent()}
           </div>
@@ -476,27 +510,27 @@ const App: React.FC = () => {
       {/* Create Project Modal */}
       {isProjectModalOpen && (
           <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
-              <div className="bg-white rounded-xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-200 p-6">
+              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in duration-200 p-6">
                   <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-bold text-slate-800">Create New Project</h3>
-                      <button onClick={() => setIsProjectModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                      <h3 className="text-lg font-bold text-slate-800 dark:text-white">Create New Project</h3>
+                      <button onClick={() => setIsProjectModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                           <X className="w-5 h-5" />
                       </button>
                   </div>
                   <form onSubmit={handleCreateProject} className="space-y-4">
                       <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">Project Name</label>
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Project Name</label>
                           <input 
                               autoFocus
                               required
                               value={newProjectName}
                               onChange={(e) => setNewProjectName(e.target.value)}
                               placeholder="e.g. West Wing Expansion"
-                              className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                              className="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                           />
                       </div>
                       <div className="flex gap-3 justify-end mt-6">
-                          <button type="button" onClick={() => setIsProjectModalOpen(false)} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
+                          <button type="button" onClick={() => setIsProjectModalOpen(false)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">Cancel</button>
                           <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg">Create Project</button>
                       </div>
                   </form>
